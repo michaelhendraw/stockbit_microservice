@@ -17,7 +17,6 @@ func main() {
 
 	log.Println("Running : Stockbit GRPC PORT", config.Server.GRPCPort)
 
-	// Serve cron without HTTP TODO
 	serve(grpcServer)
 }
 

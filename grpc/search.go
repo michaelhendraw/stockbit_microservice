@@ -3,6 +3,7 @@ package grpc
 import (
 	"errors"
 
+	pb "github.com/michaelhendraw/stockbit_microservice/grpc/proto"
 	"github.com/michaelhendraw/stockbit_microservice/internal/entity"
 	"github.com/michaelhendraw/stockbit_microservice/internal/usecase"
 )
@@ -20,8 +21,8 @@ func NewSearchGRPC(searchUseCase usecase.Search) *SearchGRPC {
 }
 
 // Search ...
-func (d *SearchGRPC) Search(pbRequest *SearchRequest) (*SearchResponse, error) {
-	pbResponse := &SearchResponse{}
+func (d *SearchGRPC) Search(pbRequest *pb.SearchRequest) (*pb.SearchResponse, error) {
+	pbResponse := &pb.SearchResponse{}
 
 	if pbRequest == nil {
 		pbResponse.Error = "Request should not be nil"
@@ -52,12 +53,12 @@ func (d *SearchGRPC) Search(pbRequest *SearchRequest) (*SearchResponse, error) {
 	return pbResponse, nil
 }
 
-func (d *SearchGRPC) mapToPbResponse(searchResponse entity.SearchResponse) *SearchResponse {
-	var pbResponse SearchResponse
+func (d *SearchGRPC) mapToPbResponse(searchResponse entity.SearchResponse) *pb.SearchResponse {
+	var pbResponse pb.SearchResponse
 
-	var pbResponseDatas []*SearchResponseData
+	var pbResponseDatas []*pb.SearchResponseData
 	for _, data := range searchResponse.SearchResponseData {
-		pbResponseDatas = append(pbResponseDatas, &SearchResponseData{
+		pbResponseDatas = append(pbResponseDatas, &pb.SearchResponseData{
 			Title:  data.Title,
 			Year:   data.Year,
 			ImdbID: data.ImdbID,
@@ -66,13 +67,14 @@ func (d *SearchGRPC) mapToPbResponse(searchResponse entity.SearchResponse) *Sear
 		})
 	}
 
+	pbResponse.Search = pbResponseDatas
 	pbResponse.TotalResults = searchResponse.TotalResults
 	pbResponse.Error = searchResponse.Error
 
 	return &pbResponse
 }
 
-func (d *SearchGRPC) getAndValidateSearchParam(pbRequest *SearchRequest) (string, int64, string, error) {
+func (d *SearchGRPC) getAndValidateSearchParam(pbRequest *pb.SearchRequest) (string, int64, string, error) {
 	var searchWord string
 	var pagination int64
 	var searchResponseError string
