@@ -42,6 +42,7 @@ func (c *Client) Close() {
 }
 
 // Search func
-func (c *Client) Search(ctx context.Context, req *pb.SearchRequest) (*pb.SearchResponse, error) {
-	return c.stockbit.Search(ctx, req)
+func (c *Client) Search(req *pb.SearchRequest) (*pb.SearchResponse, error) {
+	ctx := context.Background()
+	return c.grpc.Search(ctx, req)
 }

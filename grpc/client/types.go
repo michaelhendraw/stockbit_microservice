@@ -8,7 +8,7 @@ import (
 // Client for GRPC
 type Client struct {
 	conn *grpc.ClientConn
-	grpc pb.NewStockbitClient
+	grpc pb.StockbitClient
 }
 
 // Options for GRPC connection
