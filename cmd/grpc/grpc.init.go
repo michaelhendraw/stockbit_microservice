@@ -6,6 +6,8 @@ import (
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	grpc_opentracing "github.com/grpc-ecosystem/go-grpc-middleware/tracing/opentracing"
 	"github.com/michaelhendraw/stockbit_microservice/cmd/internal"
+	"github.com/michaelhendraw/stockbit_microservice/grpc"
+	proto "github.com/michaelhendraw/stockbit_microservice/grpc/proto"
 	googleGRPC "google.golang.org/grpc"
 )
 
@@ -27,6 +29,9 @@ func initGRPC(config *internal.Config, ucase *internal.Usecase) *internal.GRPCSe
 	)
 
 	// Create GRPC service
+	grpcService := grpc.NewService(ucase.Search)
+	proto.RegisterStockbitServer(s, grpcService)
+
 	grpcServer := &internal.GRPCServer{
 		Server:  s,
 		Address: ":" + config.Server.GRPCPort,

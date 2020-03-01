@@ -1,6 +1,7 @@
 package grpc
 
 import (
+	"context"
 	"errors"
 
 	pb "github.com/michaelhendraw/stockbit_microservice/grpc/proto"
@@ -21,7 +22,7 @@ func NewSearchGRPC(searchUseCase usecase.Search) *SearchGRPC {
 }
 
 // Search ...
-func (d *SearchGRPC) Search(pbRequest *pb.SearchRequest) (*pb.SearchResponse, error) {
+func (d *SearchGRPC) Search(ctx context.Context, pbRequest *pb.SearchRequest) (*pb.SearchResponse, error) {
 	pbResponse := &pb.SearchResponse{}
 
 	if pbRequest == nil {
