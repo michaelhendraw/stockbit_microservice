@@ -29,8 +29,8 @@ func GetClient(o *Options) (*Client, error) {
 	}
 
 	newClient := &Client{
-		conn: conn,
-		grpc: pb.NewStockbitClient(conn),
+		conn:     conn,
+		stockbit: pb.NewStockbitClient(conn),
 	}
 
 	return newClient, nil
@@ -44,5 +44,5 @@ func (c *Client) Close() {
 // Search func
 func (c *Client) Search(req *pb.SearchRequest) (*pb.SearchResponse, error) {
 	ctx := context.Background()
-	return c.grpc.Search(ctx, req)
+	return c.stockbit.Search(ctx, req)
 }
